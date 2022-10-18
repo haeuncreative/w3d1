@@ -136,9 +136,6 @@ class Array
     end
 
     def bubble_sort!(&prc)
-
-        # prc || Proc.new {|a, b| a <=> b}
-
         if self.empty?
             return self
         elsif self.length == 1
@@ -161,7 +158,22 @@ class Array
     end
 
     def bubble_sort(&prc)
-
+        copy = self.dup
+        if copy.empty?
+            return copy
+        elsif copy.length == 1
+            return copy
+        else
+            while !copy.sorted?(prc)
+                (0..copy.length - 2).each do |i|
+                    sort_num = prc.call(copy[i], copy[i + 1])
+                        if sort_num == 1
+                            copy.swap(i, i + 1)
+                        end
+                end
+            end
+            copy
+        end
     end
 
     def my_map(&proc)
@@ -264,13 +276,9 @@ end
 
 
 def concatenate(arr)
-    combined = ""
-    (0...arr.length).inject do |acc, el|
-        combined += "#{arr[acc]}"
-        acc = el
-
+    arr.inject do |acc="", el|
+        acc += el
     end
-    combined
 end
 
 
